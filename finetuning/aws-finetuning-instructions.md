@@ -96,9 +96,9 @@ python train.py
 
 ---
 
-## 7. Check outputs
+## 7. Check outputs 
 
-After training:
+After training: (output folder may be different - check what's in train.py)
 
 - `./llama_tiktok/pytorch_model.bin` – LoRA adapter weights
 - `./llama_tiktok/tokenizer/` – tokenizer files
