@@ -20,14 +20,14 @@ logging.set_verbosity_warning()
 # Using the instruction-tuned version for chat/instruction fine-tuning
 
 HF_TOKEN =  # hugging face token. create a READ token and paste that here OR Into a dotenv
-MODEL_PATH = "meta-llama/Llama-3-8B-Instruct" # can also use meta-llama 3 7b instruct
+MODEL_PATH = "meta-llama/Llama-3.1-8B-Instruct" # can also use meta-llama 3 7b instruct
 
 # make sure you request permission on hugging face to get access to these models. it should not take long.
 
 
 # Ensure this file is in the same directory as the script
-DATA_PATH = # path to data 
-OUTPUT_DIR = "./llama_tiktok"
+DATA_PATH = "./data/reddit_transcripts.csv" # or you can copy the path
+OUTPUT_DIR = "/opt/ml/model" # automatic path created by sagemaker
 
 # QLoRA Parameters
 LORA_R = 64
@@ -55,7 +55,7 @@ bnb_config = BitsAndBytesConfig(
 
 def formatting_function(examples):
     """
-    Formats the raw 'tiktok_script' into the Llama-3 instruction template.
+    Formats the raw 'tiktok_script' into the Llama-3.1 instruction template.
     We treat the instruction as the 'user' turn and the script as the 'assistant' response.
     """
     # The instruction prompt that will be consistent across all examples
@@ -76,7 +76,7 @@ def formatting_function(examples):
 # model & tokenizer setup
 print(f"Loading model with 4-bit quantization...")
 model = AutoModelForCausalLM.from_pretrained(
-    "meta-llama/Meta-Llama-3-8B-Instruct", # can also use MODEL_PATH here, but i just used the name since it wasn't working
+    "meta-llama/Meta-Llama-3.1-8B-Instruct", # can also use MODEL_PATH here, but i just used the name since it wasn't working
     quantization_config=bnb_config,
     device_map=None, 
     dtype=torch.bfloat16, 
@@ -84,7 +84,7 @@ model = AutoModelForCausalLM.from_pretrained(
 
 model.config.use_cache = False
 
-tokenizer = AutoTokenizer.from_pretrained("meta-llama/Meta-Llama-3-8B-Instruct", token=HF_TOKEN) 
+tokenizer = AutoTokenizer.from_pretrained("meta-llama/Meta-Llama-3.1-8B-Instruct", token=HF_TOKEN) 
 if tokenizer.pad_token is None:
     tokenizer.pad_token = tokenizer.eos_token
 tokenizer.padding_side = "right" # Llama requires right padding
