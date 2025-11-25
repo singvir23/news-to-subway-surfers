@@ -93,7 +93,7 @@ Click your job to monitor:
 
 ---
 
-## STEP 11 — After Training: Download or Deploy
+## After Training: Download or Deploy
 
 ### **Option A — Download the Model**
 
