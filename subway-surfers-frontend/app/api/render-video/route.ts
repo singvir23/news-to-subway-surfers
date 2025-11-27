@@ -135,6 +135,8 @@ export async function POST(request: NextRequest) {
       videoBitrate: '2M',
       encodingMaxRate: '2.5M',
       encodingBufferSize: '4M',
+      // Increase timeout to handle large video downloads
+      timeoutInMilliseconds: 120000, // 2 minutes
     });
 
     console.log('Video rendered successfully:', outputPath);
