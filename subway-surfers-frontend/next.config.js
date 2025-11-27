@@ -1,11 +1,6 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   webpack: (config, { isServer }) => {
-    // Remotion requires this for proper video rendering
-    config.resolve.alias = {
-      ...config.resolve.alias,
-    };
-
     // Externalize modules for server-side rendering
     if (isServer) {
       // WebSocket-related modules for node-edge-tts
@@ -22,7 +17,7 @@ const nextConfig = {
 
     return config;
   },
-  // Enable experimental features for Remotion
+  // Enable experimental features
   experimental: {
     serverActions: {
       bodySizeLimit: '10mb',

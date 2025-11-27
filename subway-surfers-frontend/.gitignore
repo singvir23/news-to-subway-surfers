@@ -36,7 +36,15 @@ next-env.d.ts
 # remotion
 /out
 
-# generated audio files and videos
-/public/audio
+# generated audio files and videos (temp files only)
+/public/audio/*
 /public/temp
-/public/videos
+/public/videos/*
+
+# Background video (hosted on Vercel Blob, not in repo)
+/public/subway_surfers.mp4
+/public/*.mp4
+
+# Keep directory structure
+!/public/audio/.gitkeep
+!/public/videos/.gitkeep

@@ -1,15 +1,15 @@
 import React from 'react';
-import { Video, useCurrentFrame, useVideoConfig, staticFile } from 'remotion';
+import { OffthreadVideo } from 'remotion';
 
 export const Background: React.FC = () => {
-  const frame = useCurrentFrame();
-  const { durationInFrames, fps } = useVideoConfig();
+  // Background video is hosted on Vercel Blob
+  // This prevents needing to commit large video files to git
+  const videoSrc = process.env.NEXT_PUBLIC_BACKGROUND_VIDEO_URL ||
+    'https://your-blob-url.vercel-storage.com/subway_surfers.mp4';
 
-  // Loop the video if the composition is longer than the video
-  // Subway Surfers video will loop seamlessly
   return (
-    <Video
-      src={staticFile('subway_surfers.mp4')}
+    <OffthreadVideo
+      src={videoSrc}
       style={{
         position: 'absolute',
         top: 0,
@@ -18,12 +18,14 @@ export const Background: React.FC = () => {
         height: '100%',
         objectFit: 'cover',
       }}
-      // Loop the video
-      loop
       // Mute the background video (we only want our TTS audio)
       muted
-      // Ensure smooth playback
       volume={0}
+      onError={(e) => {
+        console.error('Video load error:', e);
+        console.error('Attempted to load video from:', videoSrc);
+        console.error('Make sure NEXT_PUBLIC_BACKGROUND_VIDEO_URL is set in environment variables');
+      }}
     />
   );
 };

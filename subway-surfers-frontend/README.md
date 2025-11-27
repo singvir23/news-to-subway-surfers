@@ -1,21 +1,23 @@
 # Subway Surfers Video Generator
 
-An automated video generator that creates engaging "Subway Surfers Reddit stories" style videos with synchronized TTS narration and karaoke-style captions.
+An automated video generator that creates engaging "Subway Surfers Reddit stories" style videos with synchronized TTS narration and karaoke-style captions. Videos are automatically uploaded to Vercel Blob cloud storage.
 
 ## Features
 
 - **Free TTS**: Uses Edge-TTS with expressive voices (no API keys required)
 - **Karaoke Captions**: Word-by-word highlighting synchronized with audio
 - **Vertical Format**: 1080x1920 (9:16) optimized for TikTok, Instagram Reels, YouTube Shorts
-- **Real-time Preview**: See your video in the browser with Remotion Player
+- **Cloud Storage**: Automatic upload to Vercel Blob (no local storage needed)
 - **Simple Interface**: Just paste text and generate
+- **Auto Cleanup**: Temporary files are automatically deleted after upload
 
 ## Technology Stack
 
 - **Next.js 14**: React framework with App Router
 - **TypeScript**: Type-safe development
-- **Remotion**: React-based video composition
+- **Remotion**: React-based video rendering
 - **Edge-TTS**: Free, natural-sounding text-to-speech
+- **Vercel Blob**: Cloud storage for generated videos
 - **Tailwind CSS**: Styling
 
 ## Getting Started
@@ -24,14 +26,27 @@ An automated video generator that creates engaging "Subway Surfers Reddit storie
 
 - Node.js 18+ installed
 - npm or yarn package manager
+- Vercel account (free tier works great)
 
 ### Installation
 
-The project is already set up! Just make sure all dependencies are installed:
+1. Install dependencies:
 
 ```bash
 npm install
 ```
+
+2. Set up Vercel Blob storage (see [CLOUD_STORAGE_SETUP.md](CLOUD_STORAGE_SETUP.md))
+
+3. Create `.env.local` file:
+
+```bash
+BLOB_READ_WRITE_TOKEN=your_vercel_blob_token_here
+```
+
+4. Add the Subway Surfers background video:
+   - Download a Subway Surfers gameplay video (vertical format recommended)
+   - Save it as `public/subway_surfers.mp4`
 
 ### Running the Development Server
 
@@ -44,17 +59,18 @@ Open [http://localhost:3000](http://localhost:3000) in your browser.
 ## How to Use
 
 1. **Enter Your Text**: Paste your Reddit story, script, or any text in the input area
-2. **Generate Video**: Click the "Generate Video" button
-3. **Preview**: Watch your video with synchronized captions in the preview player
-4. **Play**: Use the player controls to play, pause, and scrub through the video
+2. **Generate Video**: Click the "Create video" button
+3. **Wait**: The app will generate audio and render the video (typically 30-60 seconds)
+4. **Download**: Click the download link to get your video from cloud storage
 
 ## Project Structure
 
 ```
-subway-surfers-env/
+subway-surfers-frontend/
 ├── app/
 │   ├── api/
-│   │   └── generate-audio/    # TTS generation endpoint
+│   │   ├── generate-audio/    # TTS generation endpoint
+│   │   └── render-video/      # Video rendering + cloud upload
 │   ├── globals.css            # Global styles
 │   ├── layout.tsx             # Root layout
 │   └── page.tsx               # Main UI
@@ -68,8 +84,10 @@ subway-surfers-env/
 │   ├── tts.ts                 # Edge-TTS utilities
 │   └── subtitles.ts           # Subtitle timing utilities
 ├── public/
-│   ├── subway_surfers.mp4     # Background video
-│   └── audio/                 # Generated audio files
+│   ├── subway_surfers.mp4     # Background video (YOU MUST ADD THIS)
+│   ├── audio/                 # Temp audio (auto-deleted)
+│   └── videos/                # Temp videos (auto-deleted)
+├── .env.local                 # Your Vercel Blob token (create this)
 └── package.json
 ```
 
@@ -77,11 +95,13 @@ subway-surfers-env/
 
 1. **Text Input**: User enters text in the textarea
 2. **TTS Generation**: API route uses Edge-TTS to generate speech with word-level timing
-3. **Video Composition**: Remotion combines:
+3. **Video Rendering**: Remotion renders video combining:
    - Background: Looping Subway Surfers gameplay
    - Audio: Generated TTS narration
    - Captions: Synchronized text with karaoke highlighting effect
-4. **Preview**: Remotion Player renders the video in real-time
+4. **Cloud Upload**: Video is uploaded to Vercel Blob storage
+5. **Cleanup**: All temporary audio and video files are deleted
+6. **Response**: User gets a download link to the cloud-hosted video
 
 ## Caption Styling
 
@@ -93,27 +113,32 @@ Captions use a karaoke-style effect:
 
 ## Voice Settings
 
-Currently using `en-US-AriaNeural` (expressive female voice). You can change the voice in [lib/tts.ts](lib/tts.ts:11):
+Currently using `en-US-AriaNeural` (expressive female voice). You can change the voice in [lib/tts.ts](lib/tts.ts):
 
 ```typescript
 const voice = 'en-US-AriaNeural'; // or 'en-US-GuyNeural' for male
 ```
 
-## Future Enhancements
+Available voices: en-US-AriaNeural, en-US-GuyNeural, en-US-JennyNeural, and more.
 
-- Video export functionality (download as MP4)
-- Multiple voice options in UI
-- Custom caption styling (font, color, position)
-- Background video selection
-- Batch processing
-- Cloud rendering with Remotion Lambda
+## Deployment
 
-## Notes
+### Deploy to Vercel
 
-- This is a local development version
-- Audio files are stored in `public/audio/`
-- The background video loops if text is longer than the video
-- Video is optimized for vertical (9:16) social media format
+1. Push your code to GitHub
+2. Import the project in Vercel dashboard
+3. Add environment variable: `BLOB_READ_WRITE_TOKEN`
+4. Deploy!
+
+**Important**: Make sure `public/subway_surfers.mp4` is committed to your repo.
+
+## Storage Costs
+
+Vercel Blob free tier includes:
+- 1 GB storage
+- 100 GB bandwidth per month
+
+This is enough for testing and small-scale use. For production, upgrade as needed.
 
 ## Troubleshooting
 
@@ -129,9 +154,13 @@ npm run dev
 - Check that the `public/audio/` directory exists
 - Ensure Edge-TTS is installed: `npm install node-edge-tts`
 
-### Captions not syncing
-- Edge-TTS provides word-level timing automatically
-- If timings are missing, a fallback estimation is used
+### Video not loading
+- Make sure `public/subway_surfers.mp4` exists
+- Check that the file is a valid MP4 video
+
+### Upload fails
+- Verify your `BLOB_READ_WRITE_TOKEN` in `.env.local`
+- Check Vercel Blob storage quota
 
 ## License
 

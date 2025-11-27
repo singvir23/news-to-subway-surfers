@@ -2,8 +2,9 @@ import { NextRequest, NextResponse } from 'next/server';
 import { bundle } from '@remotion/bundler';
 import { renderMedia, selectComposition } from '@remotion/renderer';
 import path from 'path';
-import { existsSync, unlinkSync, readdirSync, statSync } from 'fs';
+import { existsSync, unlinkSync, readdirSync, statSync, readFileSync } from 'fs';
 import os from 'os';
+import { put } from '@vercel/blob';
 
 // Cleanup old files (older than 1 hour)
 function cleanupOldFiles(directory: string, maxAgeMs: number = 3600000) {
@@ -64,6 +65,7 @@ export async function POST(request: NextRequest) {
     console.log('Bundling Remotion project...');
     const bundleLocation = await bundle({
       entryPoint: path.join(process.cwd(), 'remotion', 'Root.tsx'),
+      publicDir: path.join(process.cwd(), 'public'),
       webpackOverride: (config) => {
         // Configure webpack to understand Next.js path aliases
         return {
@@ -129,7 +131,24 @@ export async function POST(request: NextRequest) {
 
     console.log('Video rendered successfully:', outputPath);
 
-    // Clean up the audio file now that video is complete
+    // Upload to Vercel Blob storage
+    console.log('Uploading video to cloud storage...');
+    const videoBuffer = readFileSync(outputPath);
+    const blob = await put(outputFileName, videoBuffer, {
+      access: 'public',
+      contentType: 'video/mp4',
+    });
+    console.log('Video uploaded to cloud:', blob.url);
+
+    // Clean up local video file after upload
+    try {
+      unlinkSync(outputPath);
+      console.log('Cleaned up local video file');
+    } catch (err) {
+      console.error('Error cleaning up local video file:', err);
+    }
+
+    // Clean up the audio file
     const audioFilePath = path.join(process.cwd(), 'public', audioPath);
     try {
       if (existsSync(audioFilePath)) {
@@ -148,8 +167,9 @@ export async function POST(request: NextRequest) {
 
     return NextResponse.json({
       success: true,
-      videoPath: `/videos/${outputFileName}`,
-      message: 'Video rendered successfully',
+      videoPath: blob.url,
+      downloadUrl: blob.downloadUrl,
+      message: 'Video rendered and uploaded successfully',
     });
   } catch (error) {
     console.error('Error rendering video:', error);
