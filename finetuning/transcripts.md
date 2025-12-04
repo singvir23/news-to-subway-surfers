@@ -62,7 +62,7 @@ end_date = date(2025, 11, 9)
 Run the script from your terminal:
 
 ```python
-python transcripts_generation.py
+python3 transcripts_generation.py
 ```
 
 For each username, the script will:
