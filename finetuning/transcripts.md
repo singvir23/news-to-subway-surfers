@@ -50,10 +50,6 @@ from datetime import date
 start_date = date(2025, 11, 1)
 end_date = date(2025, 11, 9)
 ```
-### 5. (Optional) Change the output CSV filename:
-
-```python
-CSV_FILE = "tiktok_user_videos_and_transcripts.csv"
 ```
 
 ### Usage
