@@ -55,14 +55,14 @@ from datetime import date
 start_date = date(2025, 11, 1)
 end_date = date(2025, 11, 9)
 ```
-```
+
 
 ### Usage
 
 Run the script from your terminal:
 
 ```python
-python script_name.py
+python transcripts_generation.py
 ```
 
 For each username, the script will:
