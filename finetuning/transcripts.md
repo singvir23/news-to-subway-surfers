@@ -67,10 +67,10 @@ python3 transcripts_generation.py
 
 For each username, the script will:
 
-Authenticate with TikTok API
-Query videos in the specified date range
-Retrieve transcripts (if available)
-Append results to the CSV file
+1. Authenticate with TikTok API
+2. Query videos in the specified date range
+3. Retrieve transcripts (if available)
+4. Append results to the CSV file
 
 You will see progress printed in the console:
 ```python
