@@ -3,7 +3,6 @@
 
 # TikTok Transcript Scraper
 
-#Introduction:
 The TikTok Transcript Scraper is a Python tool designed to collect structured data from the TikTok Research API, specifically targeting creators who post Reddit-style gameplay, narration, or storytelling videos. It automatically gathers video metadata such as video IDs, usernames, captions, like counts, and view counts while also extracting TikTok’s built-in voice_to_text transcripts when available. The scraper compiles all results into a CSV file, making it a practical resource for researchers and developers working on content analysis, speech-to-text datasets, or engagement studies.
 
 This script uses the **TikTok Research API** to fetch video metadata and transcripts from preselected TikTok accounts, specifically creators posting **Reddit-style gameplay or storytelling videos**.  
