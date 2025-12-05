@@ -129,3 +129,5 @@ Like_count: 15400
 View_count: 102300
 transcript: "So this story begins when…"
 ```
+Conclusion
+The TikTok Transcript Scraper offers a simple and effective way to collect large amounts of structured TikTok content for research and analysis. By automating the retrieval of video metadata and built-in transcripts, it reduces manual effort and makes it easier to build datasets for machine learning, content studies, and audience insights. Although results depend on API access and the availability of voice_to_text features, the script provides a solid starting point for studying storytelling formats on TikTok and can be extended to support additional endpoints, larger creator lists, or richer analytical workflows.
