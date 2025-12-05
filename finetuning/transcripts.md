@@ -28,6 +28,43 @@ All results are saved to a CSV file for further analysis.
 
 ---
 
+## Functions 
+### 1. get_access_token()
+
+This function handles authentication with the TikTok Research API.
+It sends your client_key and client_secret to TikTok’s OAuth token endpoint using the client credentials grant type. If the credentials are valid, TikTok returns a temporary access token. That token is required for all other API calls. If authentication fails, the function prints the error and stops the program so you don’t continue with invalid credentials.
+
+### 2. query_videos_by_username(token, username, max_count)
+
+This function retrieves videos posted by a specific TikTok user.
+1. It builds a request that filters videos by:
+- username
+- region (US)
+- a date range for when the videos were posted
+2. It includes the token from get_access_token() in the request headers so the API recognizes the call as authorized.
+3. It sends the request to TikTok’s Video Query API, asking for fields such as caption, like count, view count, and TikTok’s auto-generated transcript (voice_to_text).
+4. If TikTok returns an error, it prints the response so you can see what went wrong and returns an empty list.
+5. If the request succeeds, it extracts the list of videos from the JSON response and returns it.
+
+### 3. save_to_csv(videos, filename)
+This function takes the list of videos returned from the API and stores them in a CSV file.
+
+1. It opens the CSV file in append mode, creating it if it doesn’t exist.
+2. If the file is new, it writes the header row first.
+3. For each video, it writes a row containing:
+- video ID
+- username
+- caption/description
+- like count
+- view count
+- transcript (TikTok’s voice_to_text output)
+4. Each video becomes its own row, allowing you to later analyze all the text and metadata.
+
+### 4. main()
+The main() function runs the whole script in order. It gets an access token from TikTok, then goes through each username in the list. For each one, it pulls their videos using the API and saves the results to the CSV file if anything is returned. It waits briefly between each request to avoid rate limits, and when all usernames are finished, it prints a message saying everything has been saved.
+
+---
+
 ## Setup
 
 ### 1. Get your TikTok Research API credentials:
@@ -35,19 +72,19 @@ All results are saved to a CSV file for further analysis.
 - `CLIENT_KEY`  
 - `CLIENT_SECRET`  
 
-### 2. Open the script and fill in the credentials:
+### 2. Open the script and fill in the credentials (Line 20-21):
 
 ```python
 CLIENT_KEY = "your_client_key_here"
 CLIENT_SECRET = "your_client_secret_here"
 ```
 
-### 3. Add TikTok usernames to scrape:
+### 3. Add TikTok usernames to scrape (Line 38):
 
 ```python
 USERNAMES = ["redditdailyvid", "storytime_confessions", "exampleuser"]
 ```
-### 4. Adjust the date range:
+### 4. Adjust the date range (Line 105-106):
 
 ```python
 from datetime import date
@@ -55,7 +92,7 @@ from datetime import date
 start_date = date(2025, 11, 1)
 end_date = date(2025, 11, 9)
 ```
-
+---
 
 ### Usage
 
