@@ -119,7 +119,7 @@ Captions + transcripts saved to tiktok_user_videos_and_transcripts.csv
 ---
 ### Output
 
-The CSV file contains:
+The CSV file contains the following data for each tiktok:
 
 ```python
 id: 1234567890
