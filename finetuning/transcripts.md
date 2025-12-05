@@ -129,9 +129,9 @@ transcript: "So this story begins when…"
 ## Limitations
 - Requires TikTok Research API credentials in order to scrape data.
 - Some TikTok videos do not provide `voice_to_text` transcripts.
--There is a rate limit to the api and the amount of times you can run it in day to extract data.
--Need to use multiple api endpoints to be able to collect an ample amount of data.
--Might need to manually find specific accounts that have videos with text enabled to extract transcripts 
+- There is a rate limit to the api and the amount of times you can run it in day to extract data.
+- Need to use multiple api endpoints to be able to collect an ample amount of data.
+- Might need to manually find specific accounts that have videos with text enabled to extract transcripts 
 
 ## Conclusion
 The TikTok Transcript Scraper offers a simple and effective way to collect large amounts of structured TikTok content for research and analysis. By automating the retrieval of video metadata and built-in transcripts, it reduces manual effort and makes it easier to build datasets for machine learning, content studies, and audience insights. Although results depend on API access and the availability of voice_to_text features, the script provides a solid starting point for studying storytelling formats on TikTok and can be extended to support additional endpoints, larger creator lists, or richer analytical workflows.
