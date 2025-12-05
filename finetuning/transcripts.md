@@ -1,7 +1,7 @@
 
 
 
-# TikTok Transcript Scraper
+# TikTok Transcript Scraper : transcripts_generation.py
 
 To build a dataset of 500+ videos, we wrote transcripts_generation.py. It gathers video metadata such as video IDs, usernames, captions, like counts, and view counts while also extracting TikTok’s built-in voice_to_text transcripts when available. The scraper compiles all results into a CSV file, making it a practical resource for researchers and developers working on content analysis, speech-to-text datasets, or engagement studies.
 
