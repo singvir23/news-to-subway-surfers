@@ -29,12 +29,12 @@ All results are saved to a CSV file for further analysis.
 ---
 
 ## Functions 
-### 1. get_access_token()
+### 1. get_access_token() (Line 52)
 
 This function handles authentication with the TikTok Research API.
 It sends your client_key and client_secret to TikTok’s OAuth token endpoint using the client credentials grant type. If the credentials are valid, TikTok returns a temporary access token. That token is required for all other API calls. If authentication fails, the function prints the error and stops the program so you don’t continue with invalid credentials.
 
-### 2. query_videos_by_username(token, username, max_count)
+### 2. query_videos_by_username(token, username, max_count) (Line 82)
 
 This function retrieves videos posted by a specific TikTok user.
 1. It builds a request that filters videos by:
@@ -46,7 +46,7 @@ This function retrieves videos posted by a specific TikTok user.
 4. If TikTok returns an error, it prints the response so you can see what went wrong and returns an empty list.
 5. If the request succeeds, it extracts the list of videos from the JSON response and returns it.
 
-### 3. save_to_csv(videos, filename)
+### 3. save_to_csv(videos, filename) (Line 149)
 This function takes the list of videos returned from the API and stores them in a CSV file.
 
 1. It opens the CSV file in append mode, creating it if it doesn’t exist.
@@ -60,7 +60,7 @@ This function takes the list of videos returned from the API and stores them in 
 - transcript (TikTok’s voice_to_text output)
 4. Each video becomes its own row, allowing you to later analyze all the text and metadata.
 
-### 4. main()
+### 4. main() (Line 189)
 The main() function runs the whole script in order. It gets an access token from TikTok, then goes through each username in the list. For each one, it pulls their videos using the API and saves the results to the CSV file if anything is returned. It waits briefly between each request to avoid rate limits, and when all usernames are finished, it prints a message saying everything has been saved.
 
 ---
@@ -116,7 +116,7 @@ Retrieved 12 videos for 'redditdailyvid'
 Retrieved 9 videos for 'storytime_confessions'
 Captions + transcripts saved to tiktok_user_videos_and_transcripts.csv
 ```
-
+---
 ### Output
 
 The CSV file contains:
